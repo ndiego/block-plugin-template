@@ -1,0 +1,26 @@
+{
+	"name": "bpt/standard-block",
+	"category": "bpt",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": ".wp-block-bpt-notice__title",
+			"default": ""
+
+		},
+		"enableTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"content": {
+			"type": "string",
+			"source": "html",
+			"selector": ".wp-block-bpt-notice__content",
+			"default": ""
+		},
+		"textAlign": {
+			"type": "string"
+		}
+	}
+}

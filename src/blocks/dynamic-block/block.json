@@ -1,0 +1,12 @@
+{
+	"name": "bpt/dynamicBlock",
+	"category": "bpt",
+	"attributes": {
+		"test": {
+			"type": "string",
+		},
+		"align": {
+			"type": "string",
+		},
+	}
+}
