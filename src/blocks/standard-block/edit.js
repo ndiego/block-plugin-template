@@ -16,8 +16,49 @@ import Inspector from './inspector';
  */
 import { __ } from '@wordpress/i18n';
 import { Component, Fragment } from '@wordpress/element';
-import { compose } from '@wordpress/compose';
+/*import { compose } from '@wordpress/compose';*/
 import { RichText } from '@wordpress/block-editor';
+
+import { compose, ifCondition } from '@wordpress/compose';
+import { registerFormatType } from '@wordpress/rich-text';
+import { RichTextToolbarButton } from '@wordpress/block-editor';
+import { withSelect } from '@wordpress/data';
+
+const MyCustomButton = props => {
+	return <RichTextToolbarButton
+		icon='editor-code'
+		title='Sample output'
+		onClick={ () => {
+			console.log( 'toggle format' );
+		} }
+	/>
+};
+
+const ConditionalButton = compose(
+	withSelect( function( select ) {
+		return {
+			selectedBlock: select( 'core/block-editor' ).getSelectedBlock()
+		}
+	} ),
+	ifCondition( function( props ) {
+
+		console.log( props.selectedBlock );
+
+		return (
+			props.selectedBlock &&
+			props.selectedBlock.name === 'bpt/standard-block'
+		);
+	} )
+)( MyCustomButton );
+
+registerFormatType(
+	'my-custom-format/sample-output', {
+		title: 'Sample output',
+		tagName: 'samp',
+		className: null,
+		edit: ConditionalButton,
+	}
+);
 
 /**
  * Block edit function
@@ -35,6 +76,7 @@ import { RichText } from '@wordpress/block-editor';
  		const {
  			textAlign,
  			title,
+			enableTitle,
  			content,
  		} = attributes;
 
@@ -62,14 +104,21 @@ import { RichText } from '@wordpress/block-editor';
 
  					} }
  				>
- 					{ ( ! RichText.isEmpty( title ) || isSelected ) && (
+ 					{ ( ! RichText.isEmpty( title ) || isSelected ) && enableTitle && (
  						<RichText
  							/* translators: placeholder text for input box */
  							placeholder={ __( 'Write title…', 'bpt_textdomain' ) }
  							value={ title }
  							className="wp-block-bpt-notice__title"
  							onChange={ ( newTitle ) => setAttributes( { title: newTitle } ) }
- 							keepPlaceholderOnFocus
+							tagName="h3"
+							/*isSelected="false"*/
+							allowedFormats={ [
+								'my-custom-format/sample-output',
+								'core/italic',
+								'core/link',
+							] }
+							keepPlaceholderOnFocus
  						/>
  					) }
  					<RichText
@@ -79,6 +128,13 @@ import { RichText } from '@wordpress/block-editor';
  						className="wp-block-bpt-notice__content"
  						onChange={ ( newContent ) => setAttributes( { content: newContent } ) }
 						tagName="div"
+						allowedFormats={ [
+							'core/bold',
+							'core/italic',
+							'core/link',
+							'core/strikethrough',
+							'core/code'
+						] }
 						multiline="p"
  						keepPlaceholderOnFocus
  					/>

@@ -126,7 +126,7 @@ class BlockPluginTemplate_Block_Assets {
 		);
 
 		wp_localize_script(
-			$$slug . '-blocks-scripts',
+			$slug . '-blocks-scripts',
 			$slug . 'BlockData',
 			array(
 				'testData' => array(

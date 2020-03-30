@@ -31,7 +31,7 @@ function bpt_register_dynamic_block_block() {
 	$metadata = json_decode( ob_get_clean(), true );
 
 	register_block_type(
-		'bpt/dynamicBlock', /* rename */
+		'bpt/dynamic-block', /* rename */
 		array(
 			'attributes'      => $metadata['attributes'],
 			'render_callback' => 'bpt_render_dynamic_block_block',

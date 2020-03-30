@@ -14,7 +14,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Block constants
  */
-//const { name, category } = metadata;
+const { name, category } = metadata;
 
 const settings = {
 	/* translators: block name */
@@ -42,8 +42,5 @@ const settings = {
 		return null;
 	},
 };
-
-const name = 'bpt/dynamicBlock';
-const category = 'bpt';
 
 export { name, category, settings };
